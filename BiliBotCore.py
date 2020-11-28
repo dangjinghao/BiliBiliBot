@@ -50,6 +50,7 @@ class event:
         self.get_last_msg_dict = botMsgItem['last_msg']
         self.get_last_msg_content = botMsgItem['last_msg']['content']
         self.get_unread_count = botMsgItem['unread_count']
+
    
     def raw(self):
         '''返回原始数据'''
@@ -64,14 +65,18 @@ class event:
     def unread_count(self):
         '''返回对话的未读数'''
         return self.botMsgItem['unread_count']
-    def last_msg_content_str(self):
-        '''返回str类型的信息内容'''
-        return self.get_last_msg_content
+#    def last_msg_content_str(self):
+#        '''返回str类型的信息内容'''
+#        return self.get_last_msg_content
     def last_msg_content_dict(self):
         '''返回dict类型的信息内容'''
-        contents = json.loads(self.get_last_msg_content)
-        return contents
-    
+        
+        return json.loads(self.get_last_msg_content)
+
+    def last_msg(self):
+        '''返回str信息,即发送者发送的信息'''
+        #if '' in
+        return json.loads(self.get_last_msg_content)['content']
 
 
 #以下为自己写的，无法使用

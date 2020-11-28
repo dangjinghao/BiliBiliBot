@@ -31,7 +31,9 @@ class BiliBot:
 
         while True:
             #bot_ts = str(int(ts * 1000000))
-            print("目前时间戳--" + str(ts))
+            
+            #print("目前时间戳--" + str(ts))
+            print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
             #格式化一个list存储event
             msg_list =[]
             self.bili_bot.getJson(ts)
@@ -65,7 +67,7 @@ class BiliBot:
                     #换成单线程了临时
                     rep = ifunc(i)
                     if not rep == None:
-                        self.send_msg(rep,i.talker_uid())
+                        self.send_msg(str(rep),i.talker_uid())
 
                     #ifunc(str(i.get_last_msg_content))
 

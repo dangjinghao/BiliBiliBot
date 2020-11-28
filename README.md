@@ -13,7 +13,7 @@
 ## 前言
 本项目基于
 
-[SocialSisterYi/bilibili-API-collect]: https://github.com/SocialSisterYi/bilibili-API-collect	"bilibili-API-collect"
+[SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect/ )
 
 
 
@@ -23,14 +23,18 @@
 
 本项目制作极为仓促，部分处理逻辑非常简陋，如有更好的处理方案，请提issue
 
+约。7~14个工作日会对issue回复
+
+。如果是较为重要的问题，可向我发送邮箱。
+
 
 
 目前尚未解决问题：
 
 - [ ] 多线程装饰器
-- [ ] 发送图片信息
+- [ ] 收发图片
 - [ ] 支持主动式发送信息
-- [ ] 发送bmoji
+- [x] 发送bmoji（内部支持）
 
 
 
@@ -49,7 +53,7 @@ clone本`BiliBiliBot`库至本地，
 导入BiliBiliBot.py
 
 ```python
-import ./BiliBiliBot
+import BiliBiliBot
 ```
 
 
@@ -57,7 +61,7 @@ import ./BiliBiliBot
 实例化
 
 ```python
-BiliBot = BiliBiliBot.BiliBot(SESSDATA = "",uid = )
+blb = BiliBiliBot.BiliBot(SESSDATA = "",uid = )
 #sessdata为cookie中的元素，uid为本bot的uid
 ```
 
@@ -72,7 +76,7 @@ BiliBot = BiliBiliBot.BiliBot(SESSDATA = "",uid = )
 使用装饰器
 
 ```python
-@BiliBiliBot.BiliBot.act_func
+@blb.act_func
 def sfunc(event):
     #此处让开发者执行命令
     
@@ -108,6 +112,7 @@ class event:
         self.get_last_msg_dict = botMsgItem['last_msg']
         self.get_last_msg_content = botMsgItem['last_msg']['content']
         self.get_unread_count = botMsgItem['unread_count']
+
    
     def raw(self):
         '''返回原始数据'''
@@ -122,13 +127,19 @@ class event:
     def unread_count(self):
         '''返回对话的未读数'''
         return self.botMsgItem['unread_count']
-    def last_msg_content_str(self):
-        '''返回str类型的信息内容'''
-        return self.get_last_msg_content
+#    def last_msg_content_str(self):
+#        '''返回str类型的信息内容'''
+#        return self.get_last_msg_content
     def last_msg_content_dict(self):
         '''返回dict类型的信息内容'''
-        contents = json.loads(self.get_last_msg_content)
-        return contents
+        
+        return json.loads(self.get_last_msg_content)
+
+    def last_msg(self):
+        '''返回str信息,即发送者发送的信息'''
+        #if '' in
+        return json.loads(self.get_last_msg_content)['content']
+
 ```
 
 
@@ -141,14 +152,14 @@ BiliBot.bot()
 
 
 
-随后bot将以两秒请求一次的方式来运行。
+随后bot将以两秒请求一次的方式来循环运行。
 
 
 
 ##  目标&&期望
 
-- [ ] 不定期更新（5stars）
-- [ ] 制为网络框架使非python开发者使用（50stars）
+- [ ] 不定期更新
+- [ ] 为非python开发者制作为网络框架
 - [ ] 完善readme
 
 
