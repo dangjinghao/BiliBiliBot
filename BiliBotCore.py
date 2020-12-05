@@ -1,7 +1,6 @@
 import requests
 import json
 import time
-from urllib.parse import quote
 class session_list:
     
     '''获取私聊的json返回数据'''
@@ -56,15 +55,15 @@ class event:
         '''返回原始数据'''
         return self.botMsgItem
 
-    def sender_uid(self):
+    def sender_uid(self)->str:
         '''返回对话的发送者id'''
-        return self.botMsgItem['last_msg']['sender_uid']
-    def talker_uid(self):
+        return str(self.botMsgItem['last_msg']['sender_uid'])
+    def talker_uid(self)->str:
         '''返回对话的id'''
-        return self.botMsgItem['talker_id']
-    def unread_count(self):
-        '''返回对话的未读数'''
-        return self.botMsgItem['unread_count']
+        return str(self.botMsgItem['talker_id'])
+    def unread_count(self)->str:
+        '''返回本对话的未读信息数'''
+        return str(self.botMsgItem['unread_count'])
 #    def last_msg_content_str(self):
 #        '''返回str类型的信息内容'''
 #        return self.get_last_msg_content
@@ -73,10 +72,10 @@ class event:
         
         return json.loads(self.get_last_msg_content)
 
-    def last_msg(self):
+    def last_msg(self)->str:
         '''返回str信息,即发送者发送的信息'''
         #if '' in
-        return json.loads(self.get_last_msg_content)['content']
+        return str(json.loads(self.get_last_msg_content)['content'])
 
 
 #以下为自己写的，无法使用
@@ -106,10 +105,10 @@ class send_msg():
         self.sender_uid = sender_uid
     def text(self,content):
         self.content = content
-    def send(self,receiver_id):
+    def send(self,receiver_uid):
         url = "https://api.vc.bilibili.com/web_im/v1/web_im/send_msg"
         payload = {'msg[sender_uid]': '%s' %str(self.sender_uid),
-        'msg[receiver_id]': '%s'%str(receiver_id),
+        'msg[receiver_id]': '%s'%str(receiver_uid),
         'msg[receiver_type]': '1',
         'msg[msg_type]': '1',
         'msg[msg_status]': '0',
@@ -117,7 +116,7 @@ class send_msg():
 
         files = []
         response = requests.request("POST", url, headers=self.headers, data = payload, files = files)
-        print("向UID:"+str(receiver_id)+"发送:"+ str(self.content))
+        print("向UID:"+str(receiver_uid)+"发送:"+ str(self.content))
         return response.json()
 
 

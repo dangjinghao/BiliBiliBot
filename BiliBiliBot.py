@@ -1,6 +1,6 @@
 import BiliBotCore
 import time
-#from threading import Thread
+from threading import Thread
 
 class BiliBot:
     def __init__(self,SESSDATA,uid:int):
@@ -11,18 +11,21 @@ class BiliBot:
         global act_func_list
         act_func_list = []
 
-    def send_msg(self,text:str,receiver_id):
+    def send_msg(self,text:str,receiver_uid):
         self.sm.text(text)
-        self.sm.send(receiver_id)
+        self.sm.send(receiver_uid)
 
 
     def act_func(self,func):
-
         #向多线程的list中传入func
-        act_func_list.append(func)
+        act_func_list.append(func)        
         
+    def act_return_func(self,act_func,event):
+        rep = act_func(event)
+        if not rep == None:
+            self.send_msg(str(rep),event.talker_uid())
         
-        
+                    
 
     def bot(self):
         '''bot运行主体'''
@@ -61,15 +64,9 @@ class BiliBot:
                 
                 for ifunc in act_func_list:
                     #多线程处理 防止func繁多阻塞
-                    #threadgo = Thread(target=ifunc, args=(i,))
-                    #threadgo.start()
-                    #处理后以生成的返回值发送信息
-                    #换成单线程了临时
-                    rep = ifunc(i)
-                    if not rep == None:
-                        self.send_msg(str(rep),i.talker_uid())
-
-                    #ifunc(str(i.get_last_msg_content))
+                    #self.act_return_func(ifunc,i)
+                    threadgo = Thread(target=self.act_return_func, args=(ifunc,i,))
+                    threadgo.start()
 
             time.sleep(2)
 
