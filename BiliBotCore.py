@@ -7,14 +7,20 @@ class session_list:
 
     def __init__(self,SESSDATA):     
         '''传入sessdata'''   
-        self.cookie = {"SESSDATA" : SESSDATA}
+        #self.cookie = {"SESSDATA" : SESSDATA}
+        self.headers = {
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36",
+            "cookie" : f"SESSDATA={SESSDATA}"
+        }
+
 
     def getJson(self,last_time):
         '''获取json'''
         ts_str = str(int(last_time * 1000000))
         session_url = f"https://api.vc.bilibili.com/session_svr/v1/session_svr/new_sessions?begin_ts={ts_str}&build=0&mobi_app=web"
-        req = requests.get(session_url,cookies=self.cookie)
+        req = requests.get(session_url,headers=self.headers)
         self.reqJson = req.json()
+        #print(req.cookies)
         return self.reqJson
 
     def botMsgList(self):
@@ -26,12 +32,13 @@ class session_list:
             return None
     def cancelUnreadMsg(self,botMsglist):
         '''取消未读信息'''
+        update_url = "https://api.vc.bilibili.com/session_svr/v1/session_svr/update_ack"
+
         for i in botMsglist:
             talker_id = i["talker_id"]
-            update_url = "http://api.vc.bilibili.com/session_svr/v1/session_svr/update_ack"
             send_data = {"talker_id":str(talker_id),"session_type":"1","ack_seqno": "",}
             if not i["unread_count"] == 0: 
-                update_req = requests.post(update_url,cookies=self.cookie,data = send_data)
+                update_req = requests.post(update_url,data = send_data,headers=self.headers)
 
                 print(f"取消与{str(talker_id)}的未读信息，返回值：" + str(update_req.json()))
 
@@ -100,7 +107,8 @@ class event:
 class send_msg():
     def __init__(self,SESSDATA,sender_uid):
         self.headers = {
-        'cookie': 'SESSDATA=%s; l=v' %SESSDATA
+        'cookie': f'SESSDATA={SESSDATA}' ,
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
         }    
         self.sender_uid = sender_uid
     def text(self,content):

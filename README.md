@@ -21,7 +21,7 @@
 
 [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect/ )
 
-基于python3(.8.0)
+基于python3(.8.0) 与 第三方库requests
 
 
 
@@ -93,13 +93,19 @@ def sfunc(event):
 
 
 
-其中sfunc()函数会传入到BiliBiliBot.BiliBot.act_func()中，名称可随意：
+
+
+其中sfunc()函数会传入到BiliBiliBot.BiliBot.act_func()中，名称可随意，且本项目支持多函数被装饰：
 
 ```python
 def theresaN1(event):
     
     print("德莉莎天下第一！")
     #即当接受到新信息时打印“德莉莎天下第一！”
+def SeeleN1(event):
+    
+    print("希儿天下第一！")
+    #即当接受到新信息时打印“希儿天下第一！”
 ```
 
 
